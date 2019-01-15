@@ -139,6 +139,28 @@ describe('express-promise-router', function() {
             });
     });
 
+    it('should call res.json  when a returned promise is resolved with anything other than "route", "next" or undefined', function() {
+        var callback = sinon.spy();
+
+        var response = {
+            test: 'dada',
+        };
+        router.get('/foo', function(req, res) {
+            return new Promise(function(resolve) {
+                delay(resolve, response);
+            });
+        });
+
+        return bootstrap(router)
+            .then(function() {
+                return GET('/foo');
+            })
+            .then(function(result) {
+                console.log(result.body);
+                assert(result.body === JSON.stringify(response));
+            });
+    });
+
     it('should move to the next middleware when next is called without an error', function() {
         var callback = sinon.spy();
 
