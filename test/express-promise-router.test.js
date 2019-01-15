@@ -156,8 +156,7 @@ describe('express-promise-router', function() {
                 return GET('/foo');
             })
             .then(function(result) {
-                console.log(result.body);
-                assert(result.body === JSON.stringify(response));
+                assert(JSON.stringify(JSON.parse(result.body)) === JSON.stringify(response));
             });
     });
 
